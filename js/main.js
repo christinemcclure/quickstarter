@@ -165,13 +165,7 @@ $(document).ready(function() {
     });
 
 
-    $("#qsContainer").on("click", "#mainOther", function(event){
-            $('#query').fadeOut(animationTime);
-            fadeOutItems(mainItems);
-            $('#askLibrarian').fadeIn(animationTime);
-            $('#tutorials').fadeIn(animationTime);
-            $('#startOverBtn').fadeIn(animationTime);
-    });
+
 
 });
 

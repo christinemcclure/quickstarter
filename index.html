@@ -93,14 +93,7 @@
             <p>Set up <a href="http://guides.library.iit.edu/content.php?pid=186787&sid=1568493#5073727">Google Scholar</a> so you can use it to search IIT's resources.</p>
           </div>          
 
-          <div id="askLibrarian" class="answer">
-            <p>Our <a href="http://library.iit.edu/ask/">Ask A Librarian</a> page will show you how you can text, chat, email or call us.</p>
-          </div>          
-
-
-          <div id="tutorials" class="answer">
-            <p>Our <a href="http://library.iit.edu/guides/">Quick Tips &amp; Tutorials</a> page will show you how to set up your accounts, search for a journals, use databases, and more....</p>
-          </div>          
+        
           
 				</div>  <!-- end qsAnswers--> 
            
@@ -108,6 +101,30 @@
 <script type="text/javascript">
 	$(document).ready(function() {	
             init(); 
+            
+		function loadQSPage(pageName){
+			if(pageName){
+				$.ajax({
+					type: "POST",
+					url: pageName,
+					cache: false,
+					dataType: "text",
+					success: onSuccess
+				});
+			}
+			$("#qsContainer").ajaxError(function(event, request, settings, exception) {
+			$("#qsContainer").html("Error Calling: " + settings.url + "<br />HTPP Code: " + request.status);});
+			function onSuccess(data){	
+				$("#qsContainer").html(data);
+			}
+		}            
+            
+            
+    $("#qsContainer").on("click", "#mainOther", function(event){
+            loadQSPage("other.html");
+    });            
+            
+            
 	});
 </script>
 </body>
