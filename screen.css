@@ -1,13 +1,17 @@
-body {
-    text-align:center;
-}
-.answer {
-    width: 60%;
-    margin: 0 auto;
-    margin-top: 5%;
-    border: 1px solid black; 
+li.answer {
+    text-align:left;
+    margin: 30px 0;
     padding: 10px;
 }
+
+#qsAnswers {
+    border: 1px solid black;
+    position:absolute;
+    top:100%;
+    width:1px;
+    margin:0 auto;
+}
+
 
 #quickstarter {
     width: 80%;

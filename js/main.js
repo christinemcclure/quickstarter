@@ -1,10 +1,12 @@
 $(document).ready(function() {
-    // save original container items
-    var startingPoint = $('#qsContainer').html();
-    var animationTime = 500;
+    
+    var pagePath = "/quickstarter/pages/"; // will need to change when switching to app
+    var animationTime = 1000;
     var pauseTime = 2000;
     var itemH=200;
     var itemW=300;
+    var pagesPath= '/quickstarter/pages/';
+    
     var mainItems = new Array(
     {id:'mainTitle', text:'a specific title...'},
     {id:'mainJournal', text:'a journal...'},
@@ -31,8 +33,7 @@ $(document).ready(function() {
     (function($){ 
         init=function() {
             $('#startOverBtn').hide();
-            $('#qsContainer').html(startingPoint);
-            $('#qsAnswers').find('.answer').hide();		
+            $('#qsAnswers').empty().css({'top':'100%', 'left':'100%'});		
             printItems(mainItems, 'button');
             $('#qsContainer').prepend('<h2 id="query">I\'m looking for...</h2>');
         }
@@ -41,8 +42,8 @@ $(document).ready(function() {
     
 
     function startOver (){
-    $('#qsContainer').empty();
-    init();			
+        $('#qsContainer').empty();
+        init();			
     }
 
     //prints an array of objects, wrapped in a specified tag 
@@ -82,90 +83,100 @@ $(document).ready(function() {
 
 
     $('#startOverBtn').click(function(){
-                    startOver();
+            startOver();
     });			
+
+//Same as loadPage in common functions, but keeping separate for app         
+function loadQSPage(pageName, element){
+    if(pageName){
+        $.ajax({
+            type: "POST",
+            url: pageName,
+            cache: false,
+            dataType: "text",
+            success: onSuccess
+        });
+    }
+    $(element).ajaxError(function(event, request, settings, exception) {
+    $(element).html("Error Calling: " + settings.url + "<br />HTPP Code: " + request.status);});
+    function onSuccess(data){	
+        $(element).html(data);
+    }
+}            
+            
+function loadAnswer(page, items){
+//    $('#query').fadeOut(animationTime);
+    fadeOutItems(items);
+    loadQSPage(pagesPath+page, "#qsAnswers");
+    $('#query').text('Try this:').fadeIn(animationTime);
+    $('#startOverBtn').fadeIn(animationTime);
+    $('#qsAnswers').animate({
+        position:'relative',
+        width:'80%',
+        top:"20%",
+        left:"10%" // matches leftover from width
+        },animationTime);            
+}            
 
     // TITLE items
     $("#qsContainer").on("click", "#mainTitle", function(event){
             $('#query').fadeOut(animationTime);
             fadeOutItems(mainItems);
-            $('#query').text('Is it a . . .').fadeIn(animationTime);
+            $('#query').text('Is this a . . .').fadeIn(animationTime);
             fadeInItems (titleItems, 'button');
             $('#startOverBtn').fadeIn(animationTime);
     });
 
     $("#qsContainer").on("click", "#book", function(event){
-            $('#query').fadeOut(animationTime);
-            fadeOutItems(titleItems);
-            $('#textbooks').fadeIn(animationTime);
-            $('#otherBooks').fadeIn(animationTime);
+        loadAnswer("books.html", titleItems);   
     });
-
+    
     $("#qsContainer").on("click", "#article", function(event){
-            $('#query').fadeOut(animationTime);
-            fadeOutItems(titleItems);
-            $('#articles').fadeIn(animationTime);
+        loadAnswer("articles.html", titleItems);
+    });
+    
+    $("#qsContainer").on("click", "#journal", function(event){
+        loadAnswer("journals.html", titleItems);
     });
 
+// Thesis items
     $("#qsContainer").on("click", "#thesis", function(event){
             $('#query').fadeOut(animationTime);
             fadeOutItems(titleItems);
             $('#query').text('Is this a . . .').fadeIn(animationTime);
             fadeInItems (thesisItems, 'button');
     });
+    
+        $("#qsContainer").on("click", "#master", function(event){
+            loadAnswer("masters.html", thesisItems);
+        });
 
-                    $("#qsContainer").on("click", "#master", function(event){
-                            $('#query').fadeOut(animationTime);
-                            fadeOutItems(thesisItems);
-                            $('#masters').fadeIn(animationTime);
-                    });
+        $("#qsContainer").on("click", "#phd", function(event){
+            loadAnswer("phds.html", thesisItems);
+        });
 
-                    $("#qsContainer").on("click", "#phd", function(event){
-                            $('#query').fadeOut(animationTime);
-                            fadeOutItems(thesisItems);
-                            $('#phds').fadeIn(animationTime);
-                    });
-
-                    $("#qsContainer").on("click", "#unknown", function(event){
-                            $('#query').fadeOut(animationTime);
-                            fadeOutItems(thesisItems);
-                            $('#unknowns').fadeIn(animationTime);
-                    });
-
-
-    $("#qsContainer").on("click", "#journal", function(event){
-            $('#query').fadeOut(animationTime);
-            fadeOutItems(titleItems);
-            $('#journals').fadeIn(animationTime);
-    });
-
+        $("#qsContainer").on("click", "#unknown", function(event){
+            loadAnswer("masters.html", thesisItems);
+        });
+        
+    
     $("#qsContainer").on("click", "#database", function(event){
-            $('#query').fadeOut(animationTime);
-            fadeOutItems(titleItems);
-            $('#databases').fadeIn(animationTime);
+        loadAnswer("databases.html", titleItems);
     });
-
-
+    
     $("#qsContainer").on("click", "#mainJournal", function(event){
-            $('#query').fadeOut(animationTime);
-            fadeOutItems(mainItems);
-            $('#journals').fadeIn(animationTime);
-            $('#citations').fadeIn(animationTime);
-            $('#startOverBtn').fadeIn(animationTime);
+        loadAnswer("journals.html", mainItems);
     });
-
-
+    
     $("#qsContainer").on("click", "#mainResearch", function(event){
-            $('#query').fadeOut(animationTime);
-            fadeOutItems(mainItems);
-            $('#researchGuides').fadeIn(animationTime);
-            $('#metaLib').fadeIn(animationTime);
-            $('#googleScholar').fadeIn(animationTime);
-            $('#startOverBtn').fadeIn(animationTime);
+        loadAnswer("research.html", mainItems);
     });
 
 
+    $("#qsContainer").on("click", "#mainOther", function(event){
+        loadAnswer("other.html", mainItems);
+    });            
+            
 
-
-});
+}); // end doc ready
 

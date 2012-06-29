@@ -35,96 +35,12 @@
         <div id="qsContainer">           
         </div><!-- end container-->     
 
-				<div id="qsAnswers">        
-        <!-- TITLE ITEMS -->
-        
-          <div id="textbooks" class="answer">
-            <p><strong>Textbooks</strong></p>
-            <p>Use our <a href="http://library.iit.edu/reserves/">course reserves app</a> to find your textbooks by class number.</p>
-          </div>
-
-          <div id="otherBooks" class="answer">
-            <p><strong>Other books</strong></p>
-            <p>Search for books in our <a href="http://library.iit.edu">catalog</a>.</p>
-          </div>
-
-          <div id="articles" class="answer">
-            <p>Use our <a href="http://library.iit.edu/articles/citation.php">citation finder</a> to find your article online.</p>
-            <p>Or, you can search for it with Google Scholar once you've <a href="http://guides.library.iit.edu/content.php?pid=186787&sid=1568493#5073727">set your preferences</a>.</p>
-          </div>
-          
-          <div id="masters" class="answer">
-            <p>Search the <a href="https://vufind.carli.illinois.edu/vf-iit/">IIT Library catalog</a> for the subject or title you want, then use the <strong>Manuscript</strong>filter to limit your results to theses.</p>
-          </div>          
-
-          <div id="phds" class="answer">
-            <p>Search the <a href="http://library.iit.edu/theses/">database</a> to find dissertations written by students from IIT and other universities.</p>
-          </div>          
-
-          <div id="unknowns" class="answer">
-            <p>All IIT dissertations and Master's theses will be in the <a href="https://vufind.carli.illinois.edu/vf-iit/">IIT Library catalog</a>. Search for the subject or title you want, then use the <strong>Manuscript</strong>filter to limit your results to theses.</p>
-          </div>          
-
-          <div id="journals" class="answer">
-            <p>Search for <a href="http://library.iit.edu/journals/">the journal's title</a> to see whether we have it in print or online.</p>
-          </div>          
-
-          <div id="databases" class="answer">
-            <p>Use the <a href="http://library.iit.edu/databases/">database list</a> to connect to your favorite database.</p>
-          </div>          
-          
-          <div id="citations" class="answer">
-            <p>Use our <a href="http://library.iit.edu/articles/citation.php">citation finder</a> search form to find your article, or learn how to set preferences in <a href="http://guides.library.iit.edu/content.php?pid=186787&sid=1568493#5073727">Google Scholar</a>.</p>
-          </div>          
-
-          <div id="researchGuides" class="answer">
-            <p>View suggestions from experts about books, databases and websites from our <a href="http://guides.library.iit.edu">research guides</a>.</p>
-          </div>          
-
-          <div id="metaLib" class="answer">
-            <p>Search multiple databases at once using our <a href="http://metalib4.exlibrisgroup.com:8340/V/?func=meta-1">database search tool</a>.</p>
-          </div>          
-
-          <div id="metaLib" class="answer">
-            <p>Search multiple databases at once using our <a href="http://metalib4.exlibrisgroup.com:8340/V/?func=meta-1">database search tool</a>.</p>
-          </div>          
-
-        <div id="googleScholar" class="answer">
-            <p>Set up <a href="http://guides.library.iit.edu/content.php?pid=186787&sid=1568493#5073727">Google Scholar</a> so you can use it to search IIT's resources.</p>
-          </div>          
-
-        
-          
-				</div>  <!-- end qsAnswers--> 
+        <div id="qsAnswers"></div> 
            
      </div> <!-- end quickstarter--> 
 <script type="text/javascript">
 	$(document).ready(function() {	
-            init(); 
-            
-		function loadQSPage(pageName){
-			if(pageName){
-				$.ajax({
-					type: "POST",
-					url: pageName,
-					cache: false,
-					dataType: "text",
-					success: onSuccess
-				});
-			}
-			$("#qsContainer").ajaxError(function(event, request, settings, exception) {
-			$("#qsContainer").html("Error Calling: " + settings.url + "<br />HTPP Code: " + request.status);});
-			function onSuccess(data){	
-				$("#qsContainer").html(data);
-			}
-		}            
-            
-            
-    $("#qsContainer").on("click", "#mainOther", function(event){
-            loadQSPage("other.html");
-    });            
-            
-            
+            init();          
 	});
 </script>
 </body>
