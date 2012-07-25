@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+        jQuery Ajaxy
+    </title>
+	
+	<!-- Include jQuery (Ajaxy Requirement) -->
+	<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+	<!-- Include jQuery Ajaxy (Production) -->
+	<!-- <script type="text/javascript" src="../scripts/jquery.ajaxy.min.js"></script> -->
+	<!-- Include jQuery Ajaxy (Development) -->
+	<script type="text/javascript" src="scripts/jquery.ajaxy.js"></script>
+	
+	<!-- Include The Demo's Requirements -->
+	<link type="text/css" rel="stylesheet" media="screen" href="styles/style.css" />
+</head>
+<body>
+
+	
+
+	
+	<div class="section using" id="using">
+		<h2>Using jQuery Ajaxy</h2>
+		
+		<h3>Seeing it work</h3>
+		
+		<p>The following demo is perhaps overly simplistic, but we know the simpler something is; the simpler it is to understand what is going on. So let's get started by clicking through the tabs/links to change the content and update our state.</p>
+		
+		<div id="demo">
+			<ul id="menu">
+				<li><a href="./pages/apricots.html" class="ajaxy ajaxy-page">Learn about Apricots</a></li>
+				<li><a href="./pages/bananas.html" class="ajaxy ajaxy-page">Lean about Bananas</a></li>
+				<li><a href="./pages/coconuts.html" class="ajaxy ajaxy-page">Learn about Coconuts</a></li>
+				<li><a href="./pages/durians.html#yummy" class="ajaxy ajaxy-page">Learn about Durians</a></li>
+				<li><a href="./pages/eggplants.php" class="ajaxy ajaxy-page">Have your say about Eggplants</a></li>
+			</ul>
+			<div id="result">
+				<div id="content" style="max-height:100px;overflow:auto;"></div>
+				<div id="current"></div>
+			</div>
+		</div>
+		
+
+	
+<script type="text/javascript">
+    (function($){
+        var $body = $(document.body),
+            $menu = $('#menu'),
+            $content = $('#content'),
+            $current = $('#current');
+    $.Ajaxy.configure({
+            'method': 'post',
+            'Controllers': {
+                '_generic': {
+                    request: function(){
+                        // Prepare
+                        var Ajaxy = $.Ajaxy;
+                        // Log what is happening
+                        if ( Ajaxy.options.debug ) window.console.debug('$.Ajaxy.Controllers._generic.request', [this,arguments]);
+                        // Loading
+                        $body.addClass('loading');
+                        // Done
+                        return true;
+                    },
+
+                    response: function(){
+                        // Prepare
+                        var Ajaxy = $.Ajaxy; var data = this.State.Response.data; var state = this.state||'unknown';
+                        // Log what is happening
+                        if ( Ajaxy.options.debug ) window.console.debug('$.Ajaxy.Controllers._generic.response', [this,arguments], data, state);
+                        // Title
+                        var title = data.title||false; // if we have a title in the response JSON
+                        if ( !title && this.state||false ) title = 'jQuery Ajaxy - '+this.state; // if not use the state as the title
+                        if ( title ) document.title = title; // if we have a new title use it
+                        // Loaded
+                        $body.removeClass('loading');
+                        // Display State
+                        $('#current').text('Our current state is: ['+state+']');
+                        // Return true
+                        return true;
+                    },
+
+                    error: function(){
+                        // Prepare
+                        var Ajaxy = $.Ajaxy; var data = this.State.Error.data||this.State.Response.data; var state = this.state||'unknown';
+                        // Error
+                        var error = data.error||data.responseText||'Unknown Error.';
+                        var error_message = data.content||error;
+                        // Log what is happening
+                        window.console.error('$.Ajaxy.Controllers._generic.error', [this, arguments], error_message);
+                        // Loaded
+                        $body.removeClass('loading');
+                        // Display State
+                        $('#current').text('Our current state is: ['+state+']');
+                        // Done
+                        return true;
+                    }
+            },
+
+            'page': {
+                    classname: 'ajaxy-page',
+                    matches: /^\/pages\/?/,
+                    request: function(){
+                        // Prepare
+                        var Ajaxy = $.Ajaxy;
+                        // Log what is happening
+                        if ( Ajaxy.options.debug ) window.console.debug('$.Ajaxy.Controllers.page.request', [this,arguments]);
+                        // Adjust Menu
+                        $menu.find('.active').removeClass('active');
+                        // Hide Content
+                        $content.stop(true,true).fadeOut(400);
+                        // Return true
+                        return true;
+                    },
+
+                    response: function(){
+                        // Prepare
+                        var Ajaxy = $.Ajaxy; var data = this.State.Response.data; var state = this.state; var State = this.State;
+                        // Log what is happening
+                        if ( Ajaxy.options.debug ) window.console.debug('$.Ajaxy.Controllers.page.response', [this,arguments], data, state);
+                        // Adjust Menu
+                        $menu.children(':has(a[href*="'+State.raw.state+'"])').addClass('active').siblings('.active').removeClass('active');
+                        // Show Content
+                        var Action = this;
+                        $content.html(data.content).fadeIn(400,function(){
+                                Action.documentReady($content);
+                        });
+                        // Return true
+                        return true;
+                    }
+                }
+            }
+        });
+
+        // All done
+    })(jQuery);
+    // Back to global scope
+</script>
+	
+
+</body>
+</html>
