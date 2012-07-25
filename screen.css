@@ -1,13 +1,15 @@
-li.answer {
+.answer li {
+    width: 40%;
+    float:left;
     text-align:left;
-    margin: 30px 0;
+    margin: 30px 2% 30px 0;
     padding: 10px;
+    border: 1px solid black;
+    list-style: none;
 }
 
 #qsAnswers {
-    border: 1px solid black;
     position:absolute;
-    top:100%;
     width:1px;
     margin:0 auto;
 }
@@ -24,7 +26,6 @@ li.answer {
     position:absolute;
     width: 80%;
     margin: 0 auto;
-    height:150px;
 }
 
 

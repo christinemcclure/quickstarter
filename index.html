@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!--TESTING -->
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="screen.css" />
 
 <!-- the line below is required for access to the appMobi JS library -->
+<!--
 <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script>
 <script type="text/javascript" language="javascript">
         // This event handler is fired once the AppMobi libraries are ready
@@ -20,17 +21,19 @@
         //initial event handler to detect when appMobi is ready to roll
         document.addEventListener("appMobi.device.ready",onDeviceReady,false);
 </script> 
-
+-->
     <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="js/easing.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
-	
+     <p id="noJS">This app requires JavaScript to be enabled in your browser. Don't worry, browsers now process JS in a safe way, unlike the late 1990's and early 2000's.</p>	
 
       <div id="quickstarter">
-      <p>Find the resource you need by answering a few questions:</p>     
-       <button id="startOverBtn">Start over</button>
+          <h1>Galvin Library Quickstarter App</h1>
+            <p id="descriptor"></p>     
+        <button id="goBackBtn">Go Back</button>
+        <button id="startOverBtn">Start over</button>
 
         <div id="qsContainer">           
         </div><!-- end container-->     

@@ -1,11 +1,10 @@
 $(document).ready(function() {
     
-    var pagePath = "/quickstarter/pages/"; // will need to change when switching to app
-    var animationTime = 1000;
+    var pagesPath = "/pages/"; // will need to change when switching to app
+    var animationTime = 800;
     var pauseTime = 2000;
     var itemH=200;
     var itemW=300;
-    var pagesPath= '/quickstarter/pages/';
     
     var mainItems = new Array(
     {id:'mainTitle', text:'a specific title...'},
@@ -33,7 +32,10 @@ $(document).ready(function() {
     (function($){ 
         init=function() {
             $('#startOverBtn').hide();
-            $('#qsAnswers').empty().css({'top':'100%', 'left':'100%'});		
+            $('#goBackBtn').hide();
+            $('#descriptor').text('Find the resource you need by answering a few questions:'); 
+            $('#qsAnswers').empty().css({'top':'1000px', 'left':'100%'}); 
+            // For some reason, 100% top doesn't work. Could calculate from height of window, but this is adequate.
             printItems(mainItems, 'button');
             $('#qsContainer').prepend('<h2 id="query">I\'m looking for...</h2>');
         }
@@ -107,13 +109,20 @@ function loadQSPage(pageName, element){
 function loadAnswer(page, items){
 //    $('#query').fadeOut(animationTime);
     fadeOutItems(items);
+    $('#descriptor').text(' ').fadeIn(animationTime); // use a space instead of fading out to keep location static
     loadQSPage(pagesPath+page, "#qsAnswers");
     $('#query').text('Try this:').fadeIn(animationTime);
     $('#startOverBtn').fadeIn(animationTime);
+    $('#goBackBtn').fadeIn(animationTime);    
+    var top = $('#query').offset().top;// use query object because qsContainer is flexible
+    var height = $('#query').height();
+    var setTop = top + height +20; 
+    setTop = setTop + 'px';
+//    alert(top + ' + ' + height + ' = ' + myOffset);
     $('#qsAnswers').animate({
         position:'relative',
         width:'80%',
-        top:"20%",
+        top:setTop,
         left:"10%" // matches leftover from width
         },animationTime);            
 }            
@@ -121,10 +130,14 @@ function loadAnswer(page, items){
     // TITLE items
     $("#qsContainer").on("click", "#mainTitle", function(event){
             $('#query').fadeOut(animationTime);
+            $('#descriptor').text(' ').fadeIn(animationTime); // use a space instead of fading out to keep location static
             fadeOutItems(mainItems);
             $('#query').text('Is this a . . .').fadeIn(animationTime);
             fadeInItems (titleItems, 'button');
             $('#startOverBtn').fadeIn(animationTime);
+            $('#goBackBtn').fadeIn(animationTime);
+
+
     });
 
     $("#qsContainer").on("click", "#book", function(event){
@@ -137,11 +150,12 @@ function loadAnswer(page, items){
     
     $("#qsContainer").on("click", "#journal", function(event){
         loadAnswer("journals.html", titleItems);
-    });
+});
 
 // Thesis items
     $("#qsContainer").on("click", "#thesis", function(event){
             $('#query').fadeOut(animationTime);
+            $('#descriptor').text(' ').fadeIn(animationTime); // use a space instead of fading out to keep location static
             fadeOutItems(titleItems);
             $('#query').text('Is this a . . .').fadeIn(animationTime);
             fadeInItems (thesisItems, 'button');
@@ -165,7 +179,7 @@ function loadAnswer(page, items){
     });
     
     $("#qsContainer").on("click", "#mainJournal", function(event){
-        loadAnswer("journals.html", mainItems);
+        loadAnswer("journals.html", mainItems);       
     });
     
     $("#qsContainer").on("click", "#mainResearch", function(event){
