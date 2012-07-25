@@ -31,6 +31,8 @@ $(document).ready(function() {
     // function 
     (function($){ 
         init=function() {
+            $('#noJS').addClass('hide');
+            $('#quickstarter').removeClass('hide');
             $('#startOverBtn').hide();
             $('#goBackBtn').hide();
             $('#descriptor').text('Find the resource you need by answering a few questions:'); 
