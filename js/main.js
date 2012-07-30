@@ -1,6 +1,6 @@
 $(document).ready(function() {
     
-    var pagesPath = "/pages/"; // will need to change when switching to app
+    var pagesPath = "/pages/"; // will need to change when switching to app or galvin site
     var animationTime = 800;
     var pauseTime = 2000;
     var itemH=200;
