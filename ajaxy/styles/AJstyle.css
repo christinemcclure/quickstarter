@@ -1,6 +1,6 @@
 /* Imports*/
-@import url("./yui-reset-3.1.1-min.css");
-@import url("./generic.css");
+@import url("./AJyui-reset-3.1.1-min.css");
+@import url("./AJgeneric.css");
 
 #demo, #demo div {
 	margin:0;
