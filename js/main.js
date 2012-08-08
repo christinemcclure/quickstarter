@@ -1,10 +1,11 @@
 $(document).ready(function() {
     
-    var pagesPath = "/pages/"; // will need to change when switching to app or galvin site
+    var pagesPath = "./pages/"; // will need to change when switching to app or galvin site
     var animationTime = 800;
     var pauseTime = 2000;
     var itemH=200;
     var itemW=300;
+    var $returnToState="";
     
     var mainItems = new Array(
     {id:'mainTitle', text:'a specific title...'},
@@ -31,6 +32,7 @@ $(document).ready(function() {
     // function 
     (function($){ 
         init=function() {
+            $('#qsContainer').empty();
             $('#noJS').addClass('hide');
             $('#quickstarter').removeClass('hide');
             $('#startOverBtn').hide();
@@ -44,11 +46,6 @@ $(document).ready(function() {
     })($);
     
     
-
-    function startOver (){
-        $('#qsContainer').empty();
-        init();			
-    }
 
     //prints an array of objects, wrapped in a specified tag 
     function printItems (arr, tag){
@@ -87,8 +84,33 @@ $(document).ready(function() {
 
 
     $('#startOverBtn').click(function(){
-            startOver();
+            init();
     });			
+
+    $('#goBackBtn').click(function(){
+         goBack();
+    });	
+    
+    function goBack (){        
+       $('#qsContainer').empty();
+       $('#qsAnswers').empty();
+       switch ($returnToState) {
+           case "basic":
+               init();
+           break;
+           case "titles":
+               printItems(titleItems, 'button');
+               $('#qsContainer').prepend('<h2 id="query">Is this a...</h2>');
+           break;
+           case "theses":
+               printItems(thesisItems, 'button');
+               $('#qsContainer').prepend('<h2 id="query">Is this a...</h2>');               
+           break;
+           default:
+               init();
+           break;
+       }
+    }
 
 //Same as loadPage in common functions, but keeping separate for app         
 function loadQSPage(pageName, element){
@@ -131,6 +153,7 @@ function loadAnswer(page, items){
 
     // TITLE items
     $("#qsContainer").on("click", "#mainTitle", function(event){
+            $returnToState="basic";
             $('#query').fadeOut(animationTime);
             $('#descriptor').text(' ').fadeIn(animationTime); // use a space instead of fading out to keep location static
             fadeOutItems(mainItems);
@@ -138,20 +161,22 @@ function loadAnswer(page, items){
             fadeInItems (titleItems, 'button');
             $('#startOverBtn').fadeIn(animationTime);
             $('#goBackBtn').fadeIn(animationTime);
-
-
+            $returnToState="basic";
     });
 
     $("#qsContainer").on("click", "#book", function(event){
         loadAnswer("books.html", titleItems);   
+        $returnToState="titles";
     });
     
     $("#qsContainer").on("click", "#article", function(event){
         loadAnswer("articles.html", titleItems);
+        $returnToState="titles";
     });
     
     $("#qsContainer").on("click", "#journal", function(event){
         loadAnswer("journals.html", titleItems);
+        $returnToState="titles";
 });
 
 // Thesis items
@@ -165,31 +190,38 @@ function loadAnswer(page, items){
     
         $("#qsContainer").on("click", "#master", function(event){
             loadAnswer("masters.html", thesisItems);
+            $returnToState="theses";
         });
 
         $("#qsContainer").on("click", "#phd", function(event){
             loadAnswer("phds.html", thesisItems);
+            $returnToState="theses";
         });
 
         $("#qsContainer").on("click", "#unknown", function(event){
             loadAnswer("masters.html", thesisItems);
+            $returnToState="theses";
         });
         
     
     $("#qsContainer").on("click", "#database", function(event){
+        $returnToState="basic";
         loadAnswer("databases.html", titleItems);
     });
     
     $("#qsContainer").on("click", "#mainJournal", function(event){
+        $returnToState="basic";
         loadAnswer("journals.html", mainItems);       
     });
     
     $("#qsContainer").on("click", "#mainResearch", function(event){
+        $returnToState="basic";
         loadAnswer("research.html", mainItems);
     });
 
 
     $("#qsContainer").on("click", "#mainOther", function(event){
+        $returnToState="basic";
         loadAnswer("other.html", mainItems);
     });            
             
