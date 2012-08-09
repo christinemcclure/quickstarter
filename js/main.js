@@ -97,14 +97,17 @@ $(document).ready(function() {
        switch ($returnToState) {
            case "basic":
                init();
+               $returnToState="basic";
            break;
            case "titles":
                printItems(titleItems, 'button');
                $('#qsContainer').prepend('<h2 id="query">Is this a...</h2>');
+               $returnToState="basic";
            break;
            case "theses":
                printItems(thesisItems, 'button');
                $('#qsContainer').prepend('<h2 id="query">Is this a...</h2>');               
+               $returnToState="titles";
            break;
            default:
                init();
@@ -131,7 +134,6 @@ function loadQSPage(pageName, element){
 }            
             
 function loadAnswer(page, items){
-//    $('#query').fadeOut(animationTime);
     fadeOutItems(items);
     $('#descriptor').text(' ').fadeIn(animationTime); // use a space instead of fading out to keep location static
     loadQSPage(pagesPath+page, "#qsAnswers");
@@ -142,7 +144,6 @@ function loadAnswer(page, items){
     var height = $('#query').height();
     var setTop = top + height +20; 
     setTop = setTop + 'px';
-//    alert(top + ' + ' + height + ' = ' + myOffset);
     $('#qsAnswers').animate({
         position:'relative',
         width:'80%',
@@ -186,6 +187,7 @@ function loadAnswer(page, items){
             fadeOutItems(titleItems);
             $('#query').text('Is this a . . .').fadeIn(animationTime);
             fadeInItems (thesisItems, 'button');
+            $returnToState="titles";
     });
     
         $("#qsContainer").on("click", "#master", function(event){
